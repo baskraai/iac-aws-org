@@ -19,9 +19,13 @@ provider "aws" {
   region = "eu-central-1"
 }
 
-provider "github" {}
+provider "github" {
+  token = var.github_token
+}
 
-provider "tfe" {}
+provider "tfe" {
+  token = var.tfc_token
+}
 
 data "aws_s3_object" "config" {
   bucket = "famkraai-iac-aws-org"
