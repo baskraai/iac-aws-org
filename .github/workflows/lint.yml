@@ -1,3 +1,4 @@
+---
 name: Lint Checking
 on:
   push:
