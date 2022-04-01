@@ -16,7 +16,12 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "eu-central-1"
+  region     = "eu-central-1"
+  access_key = var.aws_key
+  secret_key = var.aws_secret
+  assume_role {
+    role_arn     = var.aws_role
+  }
 }
 
 provider "github" {
