@@ -34,3 +34,6 @@ override.tf.json
 # Default vars
 *terraform.tfvars
 *vars.yaml
+
+# VIM Swap
+*.swp
