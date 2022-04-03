@@ -1,0 +1,5 @@
+[rules]
+    skip-rules = [
+        "AWS.IamUser.IAM.High.0391",
+        "accurics.github.IAM.1"
+    ]

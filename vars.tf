@@ -18,3 +18,7 @@ variable "aws_role" {
   type = string
   sensitive = true
 }
+variable "aws_iam_role" {
+  type = string
+  sensitive = true
+}

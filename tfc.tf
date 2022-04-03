@@ -15,7 +15,7 @@ resource "tfe_oauth_client" "github" {
 
 resource "tfe_workspace" "services" {
   for_each = yamldecode(data.aws_s3_object.config.body).services
-  name = each.value.git_repo
+  name = "iac-aws-${lower(each.key)}"
   organization = tfe_organization.famkraai.name
   vcs_repo {
     identifier         = "${yamldecode(data.aws_s3_object.config.body).github.owner}/${github_repository.services[each.key].name}"
@@ -23,4 +23,28 @@ resource "tfe_workspace" "services" {
     oauth_token_id = tfe_oauth_client.github.oauth_token_id
   }
   
+}
+
+resource "tfe_variable" "aws_key" {
+  for_each = yamldecode(data.aws_s3_object.config.body).services
+  key          = "aws_key"
+  value        = resource.aws_iam_access_key.services[each.key].id
+  category     = "terraform"
+  workspace_id = tfe_workspace.services[each.key].id
+}
+
+resource "tfe_variable" "aws_secret" {
+  for_each = yamldecode(data.aws_s3_object.config.body).services
+  key          = "aws_secret"
+  value        = resource.aws_iam_access_key.services[each.key].secret
+  category     = "terraform"
+  workspace_id = tfe_workspace.services[each.key].id
+}
+
+resource "tfe_variable" "aws_role" {
+  for_each = yamldecode(data.aws_s3_object.config.body).services
+  key          = "aws_iam"
+  value        = "arn:aws:iam::${resource.aws_organizations_account.service_accounts[each.key].id}:role/PipelineAdmin"
+  category     = "terraform"
+  workspace_id = tfe_workspace.services[each.key].id
 }

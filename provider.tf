@@ -36,3 +36,15 @@ data "aws_s3_object" "config" {
   bucket = "famkraai-iac-aws-org"
   key    = "vars.yaml"
 }
+
+# AWS Account IAM provider
+provider "aws" {
+  alias      = "iam"
+  region     = "eu-central-1"
+  access_key = var.aws_key
+  secret_key = var.aws_secret
+  assume_role {
+    role_arn     = var.aws_iam_role
+  }
+}
+

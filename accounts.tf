@@ -10,11 +10,17 @@ resource "aws_organizations_account" "accounts" {
 
 resource "aws_organizations_account" "service_accounts" {
   for_each = yamldecode(data.aws_s3_object.config.body).services
-  name  = each.value.name
+  name  = title(replace(each.key,"_"," "))
   email = each.value.email
   parent_id = aws_organizations_organizational_unit.services.id
   tags = {
     managed = "Terraform"
     repo = yamldecode(data.aws_s3_object.config.body).repo
+  }
+}
+
+output "org_accounts" {
+  value = {
+    for k, v in aws_organizations_account.service_accounts : k => v.id
   }
 }
