@@ -19,9 +19,6 @@ provider "aws" {
   region     = "eu-central-1"
   access_key = var.aws_key
   secret_key = var.aws_secret
-  assume_role {
-    role_arn     = var.aws_role
-  }
 }
 
 provider "github" {
@@ -35,6 +32,7 @@ provider "tfe" {
 data "aws_s3_object" "config" {
   bucket = "famkraai-iac-aws-org"
   key    = "vars.yaml"
+  provider = aws.s3
 }
 
 # AWS Account IAM provider
@@ -45,6 +43,28 @@ provider "aws" {
   secret_key = var.aws_secret
   assume_role {
     role_arn     = var.aws_iam_role
+  }
+}
+
+# AWS Account ssoandorg provider
+provider "aws" {
+  alias      = "ssoandorg"
+  region     = "eu-central-1"
+  access_key = var.aws_key
+  secret_key = var.aws_secret
+  assume_role {
+    role_arn     = var.aws_ssoandorg_role
+  }
+}
+
+# AWS Account s3 provider
+provider "aws" {
+  alias      = "s3"
+  region     = "eu-central-1"
+  access_key = var.aws_key
+  secret_key = var.aws_secret
+  assume_role {
+    role_arn     = var.aws_s3_role
   }
 }
 
