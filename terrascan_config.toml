@@ -1,0 +1,4 @@
+[rules]
+    skip-rules = [
+        "AWS.IamUser.IAM.High.0391"
+    ]
