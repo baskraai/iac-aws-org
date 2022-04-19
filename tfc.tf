@@ -16,6 +16,7 @@ resource "tfe_oauth_client" "github" {
 resource "tfe_workspace" "services" {
   for_each = yamldecode(data.aws_s3_object.config.body).services
   name = "iac-aws-${lower(each.key)}"
+  auto_apply = true
   organization = tfe_organization.famkraai.name
   vcs_repo {
     identifier         = "${yamldecode(data.aws_s3_object.config.body).github.owner}/${github_repository.services[each.key].name}"
